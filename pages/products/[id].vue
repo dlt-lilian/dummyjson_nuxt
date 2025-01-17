@@ -104,4 +104,4 @@ const addToCart = () => {
   console.log("Produit ajouté au panier", optionsProduct);
 };
 
-</script>
+w</script>

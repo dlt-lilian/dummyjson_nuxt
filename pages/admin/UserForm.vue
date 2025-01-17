@@ -30,7 +30,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import bcrypt from 'bcryptjs'; // Importation de bcryptjs
 
 // Champs du formulaire
 const name = ref('');
@@ -57,13 +56,12 @@ await fetchUsers(); // Charger la liste des utilisateurs
 const submitForm = async () => {
   try {
     // Créez un nouveau mot de passe crypté
-    const hashedPassword = await bcrypt.hash(password.value, 10); // 10 correspond au "salt rounds"
 
     const newUser = {
       name: name.value,
       role: role.value,
       email: email.value,
-      password: hashedPassword // Utilisation du mot de passe crypté
+      password: password.value // Utilisation du mot de passe crypté
     };
 
     // Envoi du nouvel utilisateur à l'API
@@ -92,22 +90,17 @@ const submitForm = async () => {
 
 // Fonction pour supprimer un utilisateur
 const delForm = async (userId: number) => {
-  try {
-    const { data, error } = await useFetch('/api/user', {
-      method: 'DELETE',
-      body: { id: userId },
-    });
+  const { data, error } = await useFetch('/api/user', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }, // Ajout important
+    body: JSON.stringify({ id: userId }), // Sérialisation explicite
+  });
 
-    if (!error.value) {
-      console.log('User deleted:', data.value);
-
-      // Recharger la liste des utilisateurs
-      await fetchUsers();
-    } else {
-      console.error('Error deleting user:', error.value);
-    }
-  } catch (err) {
-    console.error('Error deleting user:', err);
+  if (!error.value) {
+    console.log('User deleted successfully:', data.value);
+    await fetchUsers(); // Recharger la liste des utilisateurs
+  } else {
+    console.error('Error deleting user:', error.value);
   }
 };
 </script>
