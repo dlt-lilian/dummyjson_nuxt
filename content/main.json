@@ -1,0 +1,50 @@
+{
+  "landingcard": [
+    {
+      "title": "Réparation",
+      "description": "Add Tailwind CSS to your Nuxt application in seconds with PurgeCSS included for minimal CSS.",
+      "to": "#",
+      "icon": "i-heroicons:wrench-screwdriver"
+    },
+    {
+      "title": "Remplacement",
+      "description": "Add Tailwind CSS to your Nuxt application in seconds with PurgeCSS included for minimal CSS.",
+      "to": "#",
+      "icon": "i-heroicons:arrow-path"
+    },
+    {
+      "title": "Aide",
+      "description": "Add Tailwind CSS to your Nuxt application in seconds with PurgeCSS included for minimal CSS.",
+      "to": "#",
+      "icon": "i-heroicons:chat-bubble-oval-left-ellipsis"
+    },
+    {
+      "title": "Garantie",
+      "description": "Add Tailwind CSS to your Nuxt application in seconds with PurgeCSS included for minimal CSS.",
+      "to": "#",
+      "icon": "i-heroicons:check-badge"
+    }
+  ],
+  "favoritecategory": [
+    {
+      "img": "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png",
+      "title": "Produits beautés",
+      "to": "#"
+    },
+    {
+      "img": "https://cdn.dummyjson.com/products/images/fragrances/Calvin%20Klein%20CK%20One/1.png",
+      "title": "Parfums",
+      "to": "#"
+    },
+    {
+      "img": "https://cdn.dummyjson.com/products/images/furniture/Annibale%20Colombo%20Bed/1.png",
+      "title": "Maison",
+      "to": "#"
+    },
+    {
+      "img": "https://cdn.dummyjson.com/products/images/groceries/Apple/1.png ",
+      "title": "Consommables",
+      "to": "#"
+    }
+  ]
+}
