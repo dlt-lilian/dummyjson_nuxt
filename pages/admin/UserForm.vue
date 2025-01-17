@@ -7,17 +7,20 @@
         <label>Créer un utilisateur</label>
         <input v-model="name" type="text" class="border border-gray-300 bg-inherit" placeholder="nom" required>
         <input v-model="email" type="email" class="border border-gray-300 bg-inherit" placeholder="email" required>
+        <input v-model="password" type="password" class="border border-gray-300 bg-inherit" placeholder="Mdp" required>
         <input type="submit" class="border border-sky-400 bg-inherit active:border-sky-500" value="Ajouter un utilisateur">
       </form>
     </div>
 
     <!-- Affichage des utilisateurs -->
     <ul>
-      <li v-for="body in data" :key="body.id">
-        <form @submit.prevent="delForm(body.id)">
-          <p>ID: {{ body.id }}</p>
-          <p>Email: {{ body.email }}</p>
-          <p>Name: {{ body.name }}</p>
+      <li v-for="user in users" :key="user.id">
+        <form @submit.prevent="delForm(user.id)">
+          <p>ID: {{ user.id }}</p>
+          <p>role: {{ user.role }}</p>
+          <p>Name: {{ user.name }}</p>
+          <p>Email: {{ user.email }}</p>
+          <p>Password: {{ user.password }}</p>
           <input type="submit" class="border border-red-400 active:border-red-500 px-4" value="supprimer l'utilisateur">
         </form>
       </li>
@@ -27,64 +30,84 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import bcrypt from 'bcryptjs'; // Importation de bcryptjs
 
+// Champs du formulaire
 const name = ref('');
+const role = ref('user');
 const email = ref('');
+const password = ref('');
 
-// Récupération des données depuis l'API
-const { data, refresh } = await useFetch('/api/hello', {
-  method: 'GET',
-});
-console.log(data);
+// Liste des utilisateurs
+const users = ref([]);
 
-// Fonction pour ajouter un utilisateur
+// Récupération des données depuis l'API au chargement
+const fetchUsers = async () => {
+  const { data, error } = await useFetch('/api/user', { method: 'GET' });
+
+  if (!error.value) {
+    users.value = data.value; // Charger les utilisateurs dans la liste
+  } else {
+    console.error('Error fetching users:', error.value);
+  }
+};
+await fetchUsers(); // Charger la liste des utilisateurs
+
+// Fonction pour ajouter un utilisateur avec cryptage du mot de passe
 const submitForm = async () => {
-  const newUser = {
-    name: name.value,
-    email: email.value
-  };
-
   try {
-    const response = await useFetch('/api/hello', {
+    // Créez un nouveau mot de passe crypté
+    const hashedPassword = await bcrypt.hash(password.value, 10); // 10 correspond au "salt rounds"
+
+    const newUser = {
+      name: name.value,
+      role: role.value,
+      email: email.value,
+      password: hashedPassword // Utilisation du mot de passe crypté
+    };
+
+    // Envoi du nouvel utilisateur à l'API
+    const { data, error } = await useFetch('/api/user', {
       method: 'POST',
-      body: newUser
+      body: newUser,
     });
 
-    if (response.ok) {
-      console.log('User added:', response);
+    if (!error.value) {
+      console.log('User added:', data.value);
+
+      // Réinitialiser les champs du formulaire
       name.value = '';
       email.value = '';
-      await refresh();  // Rafraîchir la liste des utilisateurs
+      password.value = '';
+
+      // Recharger la liste des utilisateurs
+      await fetchUsers();
     } else {
-      console.error('Error adding user:', response);
+      console.error('Error adding user:', error.value);
     }
-  } catch (error) {
-    console.error('Error adding user:', error);
+  } catch (err) {
+    console.error('Error adding user:', err);
   }
 };
 
 // Fonction pour supprimer un utilisateur
-
 const delForm = async (userId: number) => {
-  const delUser = {
-    id: userId,
-  };
-
   try {
-    const response = await useFetch('/api/hello', {
+    const { data, error } = await useFetch('/api/user', {
       method: 'DELETE',
-      body: delUser
+      body: { id: userId },
     });
 
-    if (response.ok) {
-      console.log('User deleted:', response);
-      id.value = '';
-      await refresh();  // Rafraîchir la liste des utilisateurs
+    if (!error.value) {
+      console.log('User deleted:', data.value);
+
+      // Recharger la liste des utilisateurs
+      await fetchUsers();
     } else {
-      console.error('Error deleting user:', response);
+      console.error('Error deleting user:', error.value);
     }
-  } catch (error) {
-    console.error('Error deleting user:', error);
+  } catch (err) {
+    console.error('Error deleting user:', err);
   }
 };
 </script>
