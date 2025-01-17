@@ -23,8 +23,8 @@
     "nuxt": "^3.15.1",
     "pinia": "^2.3.0",
     "three": "^0.172.0",
-    "vue": "latest",
-    "vue-router": "latest"
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
   },
   "devDependencies": {
     "@iconify-json/heroicons": "^1.2.2",
@@ -33,9 +33,10 @@
     "@vueuse/nuxt": "^12.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
+    "prisma": "^6.2.1",
     "tailwindcss": "^3.4.17"
   },
   "overrides": {
-    "vue": "latest"
+    "vue": "^3.0.0"
   }
 }

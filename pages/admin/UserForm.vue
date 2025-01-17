@@ -30,8 +30,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import bcrypt from 'bcryptjs'; // Importation de bcryptjs
-
 // Champs du formulaire
 const name = ref('');
 const role = ref('user');
@@ -57,13 +55,11 @@ await fetchUsers(); // Charger la liste des utilisateurs
 const submitForm = async () => {
   try {
     // Créez un nouveau mot de passe crypté
-    const hashedPassword = await bcrypt.hash(password.value, 10); // 10 correspond au "salt rounds"
-
     const newUser = {
       name: name.value,
       role: role.value,
       email: email.value,
-      password: hashedPassword // Utilisation du mot de passe crypté
+      password: password.value
     };
 
     // Envoi du nouvel utilisateur à l'API
