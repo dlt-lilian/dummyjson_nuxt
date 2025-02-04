@@ -136,7 +136,7 @@ const links = [
   {
     label: 'User',
     icon: 'i-heroicons:user-circle',
-    to: 'admin/UserForm',
+    to: '/userform/login',
   },
   {
     label: 'Cart',

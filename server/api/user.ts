@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
         return prisma.user.create({
             data: {
                 name: body.name,
-                role: body.role,
+                role: 'user',
                 email: body.email,
                 password: hashedPassword  // Stocker le mot de passe haché
             }

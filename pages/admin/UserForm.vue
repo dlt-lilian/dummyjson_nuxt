@@ -33,7 +33,7 @@ import { ref } from 'vue';
 
 // Champs du formulaire
 const name = ref('');
-const role = ref('user');
+// const role = ref('user');
 const email = ref('');
 const password = ref('');
 
